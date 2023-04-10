@@ -28,6 +28,11 @@ This opens the logins.csv again. It:
         -this returns that dictionary input to use in the next function
     - calls the players_iterator() function that uses the returned dictionary to log into duolingo, return the player info, and append it to the player list
 '''
+
+
+
+
+
 def make_login():
     with open('logins.csv', 'a', newline='') as login_csv:
         fieldnames = ['username', 'password']
@@ -46,8 +51,45 @@ def make_login():
 def make_player(func):
     x = func[0]
     y = func[1]
+ 
     with open('players.csv', 'a', newline='') as players_csv:
         player_fieldnames =  ['username','avatar', 'streak','score','languages']
         csv_writer_players = csv.DictWriter(players_csv, fieldnames=player_fieldnames)
         csv_writer_players.writerow(Instance_Functions.player_gen_csv(x,y))
         players_csv.close()
+
+def make_player_no_func(x,y):
+    with open('players.csv', 'a', newline='') as players_csv:
+        player_fieldnames =  ['username','avatar', 'streak','score','languages']
+        csv_writer_players = csv.DictWriter(players_csv, fieldnames=player_fieldnames)
+        csv_writer_players.writerow(Instance_Functions.player_gen_csv(x,y))
+        players_csv.close()
+
+def all_Players():
+    with open('logins.csv', newline='') as csvfile:
+        fieldnames = ['username', 'password']
+        reader = csv.DictReader(csvfile, fieldnames=fieldnames)
+        for row in reader:
+            if row['username'] == 'username':
+                pass
+            if row['username'] not in reader:
+                try:
+                    make_player_no_func(row['username'], row['password'])
+                    Instance_Functions.player_gen_csv(row['username'], row['password'])
+                    
+                except:
+                    pass
+        print(Instance_Functions.players)
+
+
+def start():
+
+    while True:
+        starting = input("Make new player? Y/N \n").upper()
+        if starting == 'Y':
+            make_player(make_login())
+        if starting == 'N':
+            all_Players()
+            break
+        else:
+            print('Invalid response. Please try again')

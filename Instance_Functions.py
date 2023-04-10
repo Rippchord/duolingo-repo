@@ -57,4 +57,4 @@ def players_iter_csv(x,y):
     bingo = duolingo.Duolingo(username, password)
     return bingo
 
-print(players)
+# print(players)
